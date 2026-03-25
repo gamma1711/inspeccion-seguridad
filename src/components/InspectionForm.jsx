@@ -103,7 +103,7 @@ export default function InspectionForm() {
   return (
     <div className="form-wrapper">
       <div className="form-container">
-        <h2 className="main-title" id="form-top">Inspección Medioambiental</h2>
+        <h2 className="main-title" id="form-top">Inspección de Seguridad</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
 
