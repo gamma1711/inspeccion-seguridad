@@ -23,19 +23,18 @@ export const QuestionItem = ({ question, register, setValue }) => {
         </label>
       </div>
 
-      <div className="grid-2">
-        <FormField label="Comentarios / Evidencia">
-          <FormTextArea rows={2} name={`responses.${qKey}.comments`} register={register} />
-        </FormField>
-        <FormField label="Adjuntar Fotografías">
-          <ImageUploader
-            questionId={question.id}
-            onFilesChange={(files) => {
-              setValue(`responses.${qKey}.photos`, files);
-            }}
-          />
-        </FormField>
-      </div>
+      <FormField label="Comentarios / Evidencia">
+        <FormTextArea rows={2} name={`responses.${qKey}.comments`} register={register} />
+      </FormField>
+
+      <FormField label="Adjuntar Fotografías">
+        <ImageUploader
+          questionId={question.id}
+          onFilesChange={(files) => {
+            setValue(`responses.${qKey}.photos`, files);
+          }}
+        />
+      </FormField>
     </div>
   );
 };

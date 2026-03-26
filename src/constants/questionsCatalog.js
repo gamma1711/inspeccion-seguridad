@@ -4,7 +4,7 @@ export const inspectionCatalog = {
 			id: "1.1",
 			text: "Se dispone de Plan de Emergencia de instalación. Es conocido por los técnicos. Han recibido formación y/o han realizado simulacros de emergencia",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "1.2",
 			text: "Se dispone de los procedimientos de trabajo necesarios (ITB, ITR, etc.) están disponible y actualizados a la última revisión. El equipo técnico sabe donde consultar la documentación necesaria",
@@ -29,7 +29,7 @@ export const inspectionCatalog = {
 			id: "1.6",
 			text: "Están analizadas las desviaciones de inspecciones anteriores. Hay un plan de acción definido, documentado y/o implementado.",
 			weight: 10
-		}*/
+		}
 	],
 	"REQUISITOS ESPECÍFICOS PAÍS": [
 		{
@@ -50,7 +50,7 @@ export const inspectionCatalog = {
 			id: "4.1",
 			text: "El estado general del vehículo (neumáticos, ITV y etiqueta colocada, faros, intermitentes y luces) es correcto. Se ha realizado la revisión cada 3 meses del vehículo. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "4.2",
 			text: "El vehículo dispone de todos los elementos necesarios: botiquín, linterna, hoja de rescate, ahuyentadores, pegatinas de velocidades máxima y extintores. Los extintores están sujetos, evitando movimientos con su revisión trimestral y anual externa vigente.",
@@ -65,14 +65,14 @@ export const inspectionCatalog = {
 			id: "4.4",
 			text: "Los vehículos se estacionan en posición de salida de emergencia y fuera del balizamiento",
 			weight: 10
-		}*/
+		}
 	],
 	"ESTADO DE EQUIPOS Y HERRAMIENTAS DE TRABAJO": [
 		{
 			id: "5.1",
 			text: "Botiquín completo: consejos básicos de primeros auxilios, red de asistencia propia, disposición de teléfono de urgencias 24 horas, apósitos estériles adhesivos, desinfectantes autorizados, tiritas, suero fisiológico o similar, tijeras y pinzas, guantes de látex, esparadrapo, compresas 20x20, vendas y CKL de revisión.",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "5.2",
 			text: "Se disponen y se utilizan las herramientas manuales o eléctricas, y equipos de trabajo (compresores, hidrolimpiadoras, equipos de soldadura, radiales, etc.), según instrucciones y/o manuales de uso para los trabajos a realizar. Están en buen estado y revisadas. Herramienta para trabajos eléctricos aislada. No disponen de herramientas no autorizadas.",
@@ -112,14 +112,14 @@ export const inspectionCatalog = {
 			id: "5.9",
 			text: "Los grupos electrógenos portátiles están en perfectas condiciones, revisados cada 6 meses. Dispone de diferencial y conexión a tierra mediante cable y pica de cobre, así como cubeta que evite derrames al terreno. Las carcasas del mismo se mantienen cerradas. ",
 			weight: 10
-		}*/
+		}
 	],
 	"ESTADO DE EQUIPOS DE PROTECCIÓN INDIVIDUAL Y COLECTIVA": [
 		{
 			id: "6.1",
 			text: "Se dispone de todos los Equipos de protección individual necesarios (ropa ignífuga de manga larga, cascos, guantes mecánicos, guantes de protección contra quemaduras, gafas, botas, arnés, cuerdas, anticaídas,etc.). Están en buenas condiciones,correctamente mantenidos y revisados periódicamente ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "6.2",
 			text: "Se dispone de todos los Equipos de protección colectiva necesarios (Banquetas, alfombrillas, pértigas de comprobación y rescate, barandillas, etc.). Están en buenas condiciones, correctamente mantenidos y revisados periódicamente.",
@@ -129,14 +129,14 @@ export const inspectionCatalog = {
 			id: "6.3",
 			text: "Se dispone de los dispositivos y elementos (LOTO) necesarios para realizar el bloqueo de la instalación tanto la parte eléctrica, como hidráulica o mecánica. ",
 			weight: 10
-		}*/
+		}
 	],
 	"RIESGO ELÉCTRICO": [
 		{
 			id: "7.1",
 			text: "Se utilizan los EPIs y Equipos de protección colectiva contra el riesgo eléctrico, siguiendo lo indicado en las ITB, ITR, fichas de bloqueo o Manuales de Seguridad. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "7.2",
 			text: "Se conocen y aplican las 5 reglas de oro correctamente.",
@@ -161,14 +161,14 @@ export const inspectionCatalog = {
 			id: "7.6",
 			text: "No se manipula celda ni se hace mantenimiento si la presión de gas SF6 de la celda está por debajo del límite. ",
 			weight: 10
-		}*/
+		}
 	],
 	"RIESGO DE CAÍDA EN ALTURAS: TURBINAS, ANDAMIOS, TEJADOS, PEMP, ...": [
 		{
 			id: "8.1",
 			text: "Se utilizan los EPIs y Equipos de protección colectiva contra el riesgo de caída en alturas. Arnés, doble cabo con absorbedor de energía, cintas antitrauma, y/o dispositivo anticaídas adecuado a la línea de vida. En caso necesario disponen también de cinturones retráctiles, posicionadores, etc.",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "8.2",
 			text: "Se respeta el límte de velocidad de viento establecido para trabajos en alturas.",
@@ -203,14 +203,14 @@ export const inspectionCatalog = {
 			id: "8.8",
 			text: "El acceso y abandono de los elementos de elevación se realiza de forma adecuada por el operario cuando se encuentran en el suelo, inmovilizándolo al finalizar el trabajo. ",
 			weight: 5
-		}*/
+		}
 	],
 	"IZADOS, TRABAJOS CON GRÚAS, PUENTE-GRÚA, TRANSPORTE Y DESCARGA DE MATERIAL": [
 		{
 			id: "9.1",
 			text: "En las maniobras complejas, un responsable de la maniobra y un Recurso Preventivo o similar, están en constante comunicación con el operador, supervisando la operación y dando las instrucciones necesarias. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "9.2",
 			text: "Se baliza la zona de influencia sobre la que pudiera caer la carga, impidiendo el acceso a la misma a cualquier persona ajena a los trabajos. ",
@@ -250,14 +250,14 @@ export const inspectionCatalog = {
 			id: "9.9",
 			text: "Ningún trabajador se sube o se cuelga en la carga en suspensión o en el gancho de la grúa. ",
 			weight: 5
-		}*/
+		}
 	],
 	"TRABAJOS NOCTURNOS": [
 		{
 			id: "10.1",
 			text: "El Servicio de prevención está informado de las actividades a realizar durante horario nocturno. ",
 			weight: 5
-		}/*,
+		},
 		{
 			id: "10.2",
 			text: "Debe de existir personal de apoyo ajeno al equipo que realiza el trabajo en todo el periodo de duración de dicho trabajo, en perfecta comunicación constante y con disponibilidad suficiente para presentarse en la zona de trabajo en un tiempo máximo de 30 minutos. Este apoyo puede ser de IPT o de empresa externa ",
@@ -272,14 +272,14 @@ export const inspectionCatalog = {
 			id: "10.4",
 			text: "El personal utiliza luz frontal en su casco y llevar en todo momento chaleco reflectante.",
 			weight: 5
-		}*/
+		}
 	],
 	"TRABAJOS EN ESPACIOS CONFINADOS": [
 		{
 			id: "11.1",
 			text: "En espacios confinados siempre hay un vigilante exterior de la zona mientras se realiza la tarea. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "11.2",
 			text: "Se realizan mediciones frecuentes de oxígeno en la zona confinada. ",
@@ -294,14 +294,14 @@ export const inspectionCatalog = {
 			id: "11.4",
 			text: "Se disponen de los elementos necesarios para poder realizar escape/rescate. ",
 			weight: 10
-		}*/
+		}
 	],
 	"ATMÓSFERAS EXPLOSIVAS": [
 		{
 			id: "12.1",
 			text: "Se ha desclasificado la zona de trabajo. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "12.2",
 			text: "Se disponen de herramientas y equipos de trabajo adecuadas para zonas ATEX. ",
@@ -316,26 +316,26 @@ export const inspectionCatalog = {
 			id: "12.4",
 			text: "Se realizan mediciones antes de acceder a la zona y mediciones continuas durante los trabajos",
 			weight: 10
-		}*/
+		}
 	],
 	"TRABAJOS EN CALIENTE": [
 		{
 			id: "13.1",
 			text: "Se utilizan los EPIS adecuados al trabajo a realizar",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "13.2",
 			text: "En operaciones de trabajo en caliente (soldadura, corte con radial), o uso de grupo electrógeno portátil se disponen de los medios extintores adecuados en la zona de trabajo. Se revisa la superficie de trabajo y se encuentra libre de material inflamable. ",
 			weight: 10
-		}*/
+		}
 	],
 	"TRABAJOS CON HERRAMIENTA HIDRÁULICA": [
 		{
 			id: "14.1",
 			text: "Los equipos hidráulicos (Bomba, llaves, tensionadora, mangueras, etc.) está en buen estado de conservación. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "14.2",
 			text: "Las mangueras no presentan daños y se reemplazan antes de 6 años. ",
@@ -350,14 +350,14 @@ export const inspectionCatalog = {
 			id: "14.4",
 			text: "Las herramientas hidráulicas se transportan adecuadamente, protegidos de golpes, evitando dobleces de mangueras, etc.",
 			weight: 5
-		}*/
+		}
 	],
 	"INSTALACIONES: EDIFICIOS, ALMACENES, SUBESTACIÓN, ZONAS COMUNES": [
 		{
 			id: "15.1",
 			text: "Se dispone de medios extintores, señalización e iluminación de emergencia adecuada. Estos medios están revisados y correctamente mantenidos. Las puertas tienen manivela y están sujetas. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "15.2",
 			text: "Delimitación, señalización e iluminación correcta de las zonas de trabajo, tránsito y almacenaje (incluido zona para productos químicos). Así como delimitaciones que restringen el paso a las instalaiones o a los trabajos con riesgos de accidentes. ",
@@ -382,14 +382,14 @@ export const inspectionCatalog = {
 			id: "15.6",
 			text: "Condiciones ergonómicas del puesto adecuadas: Iluminación, ruido, temperatura, posturas, lugar de trabajo, etc. ",
 			weight: 1
-		}*/
+		}
 	],
 	"TRABAJOS DE MANTENIMIENTO EN AEROGENERADORES": [
 		{
 			id: "16.1",
 			text: "Se ha realizado y completado el control previo al inicio de los trabajos. Se ha completado el permiso de trabajo en caso de ser necesario. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "16.2",
 			text: "Los técnicos se encuentran bien física y mentalmente. Además están concentrados en los trabajos a realizar. ",
@@ -594,14 +594,14 @@ export const inspectionCatalog = {
 			id: "16.42",
 			text: "Los productos químicos manipulados disponen de etiquetado correcto y estandarizado. Se transportan y transvasan en envases y/o lugares adecuados. Los recipientes usados son estancos/herméticos. ",
 			weight: 5
-		}*/
+		}
 	],
 	"GRANDES OPERATIVOS EN AEROGENERADORES": [
 		{
 			id: "17.1",
 			text: "En trabajos simultaneos con grúas todo el personal lleva el chaleco reflectante y esta balizada la zona con riesgo de caídas de objetos/cargas. ",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "17.2",
 			text: "Se cubre el hueco existente en la plataforma del Yaw (por donde van los cables de potencia), con una lona portátil, de manera que impida la caída de cualquier material. ",
@@ -611,6 +611,6 @@ export const inspectionCatalog = {
 			id: "17.3",
 			text: "Para los trabajos sin capota permanece anclados a un punto fijo siempre que la fibra de la nacelle quede por debajo de los hombros, con el casco puesto y el barbuquejo atado. ",
 			weight: 10
-		}*/
+		}
 	]
 }

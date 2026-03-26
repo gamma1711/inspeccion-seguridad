@@ -25,42 +25,47 @@ export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog
   const rvCol = 140; // Inicio valor derecha
   const lineH = 5;   // Altura de línea
 
-  // Fila 1: AGRUPACIÓN | PROYECTO
-  doc.setFont("helvetica", "bold"); doc.text("AGRUPACION:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(headerData.agrupacion || "N/A", vCol, y);
-  doc.setFont("helvetica", "bold"); doc.text("PROYECTO:", rCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.project_name || "N/A", 55)[0], rvCol, y);
+  // Fila 1: NUMERO AU | AGRUPACIÓN
+  doc.setFont("helvetica", "bold"); doc.text("NUMERO AU:", lCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(headerData.numero_au || "N/A", vCol, y);
+  doc.setFont("helvetica", "bold"); doc.text("AGRUPACION:", rCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(headerData.agrupacion || "N/A", rvCol, y);
   y += lineH;
 
-  // Fila 2: CLIENTE/FILIAL | INSTALACIÓN
-  doc.setFont("helvetica", "bold"); doc.text("CLIENTE/FILIAL:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.client_name || "N/A", 55)[0], vCol, y);
+  // Fila 2: PROYECTO | INSTALACIÓN
+  doc.setFont("helvetica", "bold"); doc.text("PROYECTO:", lCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.project_name || "N/A", 55)[0], vCol, y);
   doc.setFont("helvetica", "bold"); doc.text("INSTALACION:", rCol, y);
   doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.instalacion || "N/A", 55)[0], rvCol, y);
   y += lineH;
 
-  // Fila 3: NUMERO AU | F. AUDITORIA
-  doc.setFont("helvetica", "bold"); doc.text("NUMERO AU:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(headerData.numero_au || "N/A", vCol, y);
-  doc.setFont("helvetica", "bold"); doc.text("F. AUDITORIA:", rCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(headerData.fecha_auditoria || "N/A", rvCol, y);
+  // Fila 3: CLIENTE/FILIAL | ACTIVO
+  doc.setFont("helvetica", "bold"); doc.text("CLIENTE/FILIAL:", lCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.client_name || "N/A", 55)[0], vCol, y);
+  doc.setFont("helvetica", "bold"); doc.text("ACTIVO:", rCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(headerData.activo_inspeccionado || "N/A", rvCol, y);
   y += lineH;
 
-  // Fila 4: OBS. TÉCNICO (ancho completo)
+  // Fila 4: F. AUDITORIA | F. CIERRE
+  doc.setFont("helvetica", "bold"); doc.text("F. AUDITORIA:", lCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(headerData.fecha_auditoria || "N/A", vCol, y);
+  doc.setFont("helvetica", "bold"); doc.text("F. CIERRE:", rCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(headerData.fecha_cierre || "N/A", rvCol, y);
+  y += lineH;
+
+  // Fila 5: USUARIO
+  doc.setFont("helvetica", "bold"); doc.text("USUARIO:", lCol, y);
+  doc.setFont("helvetica", "normal"); doc.text(headerData.usuario_auditor || "N/A", vCol, y);
+  y += lineH;
+
+  // Fila 6: OBS. TÉCNICO (ancho completo)
   doc.setFont("helvetica", "bold"); doc.text("OBS. TECNICO:", lCol, y);
   doc.setFont("helvetica", "normal");
   const obsLines = doc.splitTextToSize(headerData.obs_tecnico || "N/A", 152);
   doc.text(obsLines, vCol, y);
   y += (obsLines.length * 4) + 2;
 
-  // Fila 5: USUARIO | ACTIVO
-  doc.setFont("helvetica", "bold"); doc.text("USUARIO:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(headerData.usuario_auditor || "N/A", vCol, y);
-  doc.setFont("helvetica", "bold"); doc.text("ACTIVO:", rCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(headerData.activo_inspeccionado || "N/A", rvCol, y);
-  y += lineH;
-
-  // Fila 6: TECNICO(S) (ancho completo, multi-línea)
+  // Fila 7: TECNICO(S) (ancho completo, multi-línea)
   doc.setFont("helvetica", "bold"); doc.text("TECNICO:", lCol, y);
   doc.setFont("helvetica", "normal");
   const tecnicosText = headerData.tecnicos_involucrados || "N/A";
@@ -68,39 +73,7 @@ export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog
   tecnicosList.forEach((tecnico, idx) => {
     doc.text(tecnico, vCol, y + (idx * 4));
   });
-  y += Math.max(tecnicosList.length * 4, 4) + 2;
-
-  // Fila 7: HORAS AUDITOR (inicio -> fecha auditoría con duración)
-  doc.setFont("helvetica", "bold"); doc.text("HORAS AUDITOR:", lCol, y);
-  doc.setFont("helvetica", "normal");
-  const horaInicio = headerData.hora_inicio || "N/A";
-  const horaFin = headerData.fecha_auditoria || "N/A";
-  doc.text(`${horaInicio}   ->   ${horaFin}`, vCol, y);
-  y += lineH;
-
-  // Fila 8: EMPRESA/PAIS | TIPO DE AREA
-  doc.setFont("helvetica", "bold"); doc.text("EMPRESA/PAIS:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(headerData.empresa_pais || "N/A", vCol, y);
-  doc.setFont("helvetica", "bold"); doc.text("TIPO DE AREA:", rCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(headerData.tipo_area || "N/A", rvCol, y);
-  y += lineH;
-
-  // Fila 9: DESCRIPCION | FECHA CREACION
-  doc.setFont("helvetica", "bold"); doc.text("DESCRIPCION:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.descripcion || "N/A", 55)[0], vCol, y);
-  doc.setFont("helvetica", "bold"); doc.text("FECHA CREACION:", rCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(new Date().toISOString().split('T')[0], rvCol, y);
-  y += lineH;
-
-  // Fila 10: PROYECTO (repetido) 
-  doc.setFont("helvetica", "bold"); doc.text("PROYECTO:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.project_name || "N/A", 55)[0], vCol, y);
-  y += lineH;
-
-  // Fila 11: TITULO
-  doc.setFont("helvetica", "bold"); doc.text("TITULO:", lCol, y);
-  doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(headerData.titulo || "N/A", 150)[0], vCol, y);
-  y += lineH + 3;
+  y += Math.max(tecnicosList.length * 4, 4) + 5;
 
   // --- BARRA NEGRA (Nº | V | PREGUNTA) ---
   checkPageBreak(10);
