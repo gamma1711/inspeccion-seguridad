@@ -91,9 +91,16 @@ serve(async (req) => {
     const filaMaestra = [
       idRelacional,
       new Date().toLocaleDateString(),
+      headerData.agrupacion || "N/A",
       headerData.project_name || "N/A",
       headerData.client_name || "N/A",
+      headerData.instalacion || "N/A",
+      headerData.fecha_auditoria || "N/A",
+      headerData.fecha_cierre || "N/A",
       headerData.usuario_auditor || "N/A",
+      headerData.activo_inspeccionado || "N/A",
+      headerData.tecnicos_involucrados || "N/A",
+      headerData.obs_tecnico || "N/A",
       totalScore.toString(),
       urlPdfGenerado
     ];
