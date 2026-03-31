@@ -13,6 +13,7 @@ import {
 import { compressAndPrepareImage } from '../utils/imageUtils';
 import { calculateTotalScore, getIncidenceWeight } from '../utils/inspectionUtils';
 import './InspectionForm.css';
+import logo from '../assets/7-revergy_horizontal.png';
 
 export default function InspectionForm() {
   const { register, control, handleSubmit, setValue, reset } = useForm();
@@ -103,6 +104,11 @@ export default function InspectionForm() {
   return (
     <div className="form-wrapper">
       <div className="form-container">
+
+        <div className="branding-header">
+          <img src={logo} alt="REVERGY" className="branding-logo" />
+        </div>
+
         <h2 className="main-title" id="form-top">Inspección de Seguridad</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -263,3 +263,16 @@ textarea.form-control {
     border-top: 1px dashed #ced4da;
     margin: 20px 0;
 }
+
+.branding-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.branding-logo {
+    height: 50px;
+    object-fit: contain;
+}
