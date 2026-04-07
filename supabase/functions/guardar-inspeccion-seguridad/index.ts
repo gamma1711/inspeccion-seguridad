@@ -41,7 +41,7 @@ serve(async (req) => {
 
     // Configuración de rutas
     const nombreCarpeta = `${headerData.numero_au || 'Auditoria'}_${new Date().toISOString().split('T')[0]}`;
-    const rutaBase = `Inspecciones_Seguridad/Evidencias/${nombreCarpeta}`;
+    const rutaBase = `Inspecciones_Seguridad Aerogenerador/Evidencias/${nombreCarpeta}`;
     const urlsImagenes: Record<string, string[]> = {};
 
     // 3. Subir Imágenes a OneDrive
@@ -82,7 +82,7 @@ serve(async (req) => {
         if (pdfRes.ok) urlPdfGenerado = pdfData.webUrl;
     }
 
-    const archivoExcel = 'Inspecciones_Seguridad/Reporte_Inspecciones_Seguridad.xlsx';
+    const archivoExcel = 'Inspecciones_Seguridad Aerogenerador/Reporte_Inspecciones_Seguridad.xlsx';
     const idRelacional = headerData.numero_au || inspectionId.split('-')[0]; // El AU que une todo
 
     // =========================================================================
