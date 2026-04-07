@@ -9,7 +9,7 @@ export const inspectionCatalog = {
 			id: "1.2",
 			text: "Se dispone de los procedimientos de trabajo necesarios (ITB, ITR, etc.) están disponible y actualizados a la última revisión. El equipo técnico sabe donde consultar la documentación necesaria",
 			weight: 10
-		}/*,
+		},
 		{
 			id: "1.3",
 			text: "Se conocen los últimos accidentes ocurridos en la empresa, asi como las últimas alertas y notas internas y enviadas.",
@@ -611,6 +611,6 @@ export const inspectionCatalog = {
 			id: "17.3",
 			text: "Para los trabajos sin capota permanece anclados a un punto fijo siempre que la fibra de la nacelle quede por debajo de los hombros, con el casco puesto y el barbuquejo atado. ",
 			weight: 10
-		}*/
+		}
 	]
 }
