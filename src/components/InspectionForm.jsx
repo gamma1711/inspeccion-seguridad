@@ -109,7 +109,7 @@ export default function InspectionForm() {
           <img src={logo} alt="REVERGY" className="branding-logo" />
         </div>
 
-        <h2 className="main-title" id="form-top">Inspección de Seguridad</h2>
+        <h2 className="main-title" id="form-top">Inspección de Seguridad a Aerogenerador</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
 

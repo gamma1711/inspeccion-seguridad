@@ -1,19 +1,38 @@
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import logo from '../assets/7-revergy_horizontal.png';
 
 /**
  * Genera un PDF en formato base64 a partir de los datos de la inspección.
  */
 export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog, imagesData) => {
-  const doc = new jsPDF();
-  let y = 15;
+  const doc = new jsPDF({
+    compress: true
+  });
+
+  // Agregar LOGO y TÍTULO en la cabecera
+  const addHeader = () => {
+    doc.addImage(logo, 'PNG', 10, 10, 45, 12);
+
+    // Título de la inspección como encabezado en todas las páginas
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    // Posicionamos el texto a la derecha del logo
+    doc.text("INSPECCIÓN DE SEGURIDAD A AEROGENERADOR", 60, 18);
+  };
+
+  addHeader();
+
+  let y = 30; // Aumentado para dar más espaciado tras el logo
   const pageHeight = doc.internal.pageSize.height;
 
   // Función auxiliar para saltar de página si se acaba el espacio
   const checkPageBreak = (neededSpace) => {
     if (y + neededSpace > pageHeight - 15) {
       doc.addPage();
-      y = 15;
+      addHeader();
+      y = 30;
     }
   };
 
@@ -103,65 +122,92 @@ export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog
       const resp = getResponse(q.id);
       if (!resp) return; // Si la pregunta no se respondió, la saltamos
 
-      checkPageBreak(15);
+      const isNoOk = resp.status === 'NO OK' || (resp.applied_score && resp.applied_score > 0);
+
+      const drawBlockBg = (yPos, height) => {
+        if (isNoOk) {
+          doc.setFillColor(255, 235, 235); // Rojo claro
+          // Cajas contiguas para armar el panel completo (y - 4 es porque y es bottom-baseline del texto normal)
+          doc.rect(10, yPos - 4, 190, height, "F");
+        }
+      };
+
+      const appliedScore = resp.applied_score || 0;
+      const questionLines = doc.splitTextToSize(q.text, 145);
+      const qHeight = (questionLines.length * 4) + 2;
+
+      checkPageBreak(qHeight + 5);
 
       // 1. Fila de la Pregunta
+      drawBlockBg(y, qHeight);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(8);
       doc.text(q.id.toString(), 12, y); // ID
-      
-      const appliedScore = resp.applied_score || 0;
+
+      if (isNoOk) doc.setTextColor(200, 0, 0); // Opcional: resaltar el puntaje en rojo más fuerte
       doc.text(appliedScore.toString(), 25, y); // Puntaje
+      doc.setTextColor(0, 0, 0);
 
       doc.setFont("helvetica", "normal");
-      const questionLines = doc.splitTextToSize(q.text, 145);
       doc.text(questionLines, 45, y);
-      y += (questionLines.length * 4) + 2;
+      y += qHeight;
 
-      // 2. Fila de Estado (sin color)
+      // 2. Fila de Estado
+      checkPageBreak(5);
+      drawBlockBg(y, 5);
       doc.setFont("helvetica", "bold");
       doc.text("ESTADO:", 12, y);
       doc.setFont("helvetica", "normal");
       const status = resp.status || 'N/A';
+      if (isNoOk) doc.setTextColor(200, 0, 0);
       doc.text(status, 35, y);
+      doc.setTextColor(0, 0, 0);
       y += 5;
 
-      // 3. Fila de Comentarios (sin color)
+      // 3. Fila de Comentarios
+      const commentLines = doc.splitTextToSize(resp.comments || "Sin comentarios", 140);
+      const cHeight = (commentLines.length * 4) + 4;
+      checkPageBreak(cHeight);
+      drawBlockBg(y, cHeight);
       doc.setFont("helvetica", "bold");
       doc.text("COMENTARIOS:", 12, y);
       doc.setFont("helvetica", "normal");
-      const commentLines = doc.splitTextToSize(resp.comments || "Sin comentarios", 140);
       doc.text(commentLines, 45, y);
-      y += (commentLines.length * 4) + 4;
+      y += cHeight;
 
-      // 3. Renderizado de Imágenes
+      // 4. Renderizado de Imágenes
       const qImages = imagesData.filter(img => img.question_code === q.id);
       if (qImages.length > 0) {
         let xImg = 12;
-        let maxHeightRow = 0;
         const imgWidth = 50;
         const imgHeight = 40;
+        let isFirstInRow = true;
 
         qImages.forEach((img) => {
-          checkPageBreak(imgHeight + 10);
-
           if (xImg + imgWidth > 190) {
-            // Si se sale del margen derecho, bajamos a la siguiente línea
+            // Salto a la nueva fila de imágenes en la misma pregunta
+            y += imgHeight + 8;
             xImg = 12;
-            y += imgHeight + 5;
-            checkPageBreak(imgHeight + 10);
+            isFirstInRow = true;
+          }
+
+          if (isFirstInRow) {
+            checkPageBreak(imgHeight + 12);
+            drawBlockBg(y, imgHeight + 8);
+            isFirstInRow = false;
           }
 
           const imgDataUri = `data:${img.mimeType};base64,${img.content}`;
           const format = img.mimeType === 'image/png' ? 'PNG' : 'JPEG';
 
-          doc.addImage(imgDataUri, format, xImg, y, imgWidth, imgHeight);
+          // El alias 'FAST' ayuda adicionalmente a la compresión si la misma imagen se usa, aunque aquí son únicas
+          doc.addImage(imgDataUri, format, xImg, y, imgWidth, imgHeight, undefined, 'FAST');
           xImg += imgWidth + 5;
-          maxHeightRow = imgHeight;
         });
 
-        y += maxHeightRow + 8; // Espacio después de las fotos
+        y += imgHeight + 8; // Altura final de la última fila de imágenes transcurrida
       } else {
+        drawBlockBg(y, 3);
         y += 3; // Espacio pequeño si no hay fotos
       }
     });
