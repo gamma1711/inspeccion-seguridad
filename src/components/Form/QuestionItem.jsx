@@ -1,9 +1,16 @@
 import React from 'react';
+import { useWatch } from 'react-hook-form';
 import ImageUploader from '../ImageUploader';
 import { FormField, FormTextArea } from './FormField';
 
-export const QuestionItem = ({ question, register, setValue }) => {
+export const QuestionItem = ({ question, register, setValue, control }) => {
   const qKey = question.id.replace('.', '_');
+
+  // Observamos las fotos de esta pregunta específica para pasarlas como valor inicial
+  const photos = useWatch({
+    control,
+    name: `responses.${qKey}.photos`
+  });
 
   return (
     <div className="question-item">
@@ -30,6 +37,7 @@ export const QuestionItem = ({ question, register, setValue }) => {
       <FormField label="Adjuntar Fotografías">
         <ImageUploader
           questionId={question.id}
+          initialFiles={photos}
           onFilesChange={(files) => {
             setValue(`responses.${qKey}.photos`, files);
           }}

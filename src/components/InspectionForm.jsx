@@ -1,6 +1,7 @@
 // src/components/InspectionForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import localforage from 'localforage';
 import { inspectionCatalog } from '../constants/questionsCatalog';
 import { HeaderSection } from './Form/HeaderSection';
 import { QuestionItem } from './Form/QuestionItem';
@@ -15,13 +16,65 @@ import { calculateTotalScore, getIncidenceWeight } from '../utils/inspectionUtil
 import './InspectionForm.css';
 import logo from '../assets/7-revergy_horizontal.png';
 
-export default function InspectionForm() {
-  const { register, control, handleSubmit, setValue, reset } = useForm();
+// Configuración de localforage
+localforage.config({
+  name: 'InspeccionSeguridad',
+  storeName: 'drafts'
+});
 
+export default function InspectionForm() {
+  const { register, control, handleSubmit, setValue, reset, watch } = useForm();
+
+  // Observamos todo el formulario para el guardado automático
+  const allValues = watch();
+  
   // Observamos las respuestas para el cálculo reactivo del puntaje
   const responses = useWatch({ control, name: 'responses' }) || {};
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+
+  // Carga inicial del borrador
+  useEffect(() => {
+    const checkDraft = async () => {
+      try {
+        const draft = await localforage.getItem('current_inspection_draft');
+        if (draft) {
+          const shouldRestore = window.confirm(
+            'Se encontró una inspección iniciada pero no guardada. ¿Desea recuperar los datos?'
+          );
+          if (shouldRestore) {
+            reset(draft);
+          } else {
+            await localforage.removeItem('current_inspection_draft');
+          }
+        }
+      } catch (err) {
+        console.error('Error al cargar el borrador:', err);
+      }
+    };
+    checkDraft();
+  }, [reset]);
+
+  // Guardado automático con Debounce (1.5 segundos)
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      // Solo guardamos si hay algo de información en la cabecera o respuestas
+      const hasContent = allValues.header?.project_name || 
+                        allValues.header?.instalacion || 
+                        Object.keys(allValues.responses || {}).length > 0;
+      
+      if (hasContent && !isSubmitting) {
+        try {
+          await localforage.setItem('current_inspection_draft', allValues);
+          console.log('Borrador guardado automáticamente');
+        } catch (err) {
+          console.error('Error al guardar borrador:', err);
+        }
+      }
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [allValues, isSubmitting]);
 
   // Cálculo dinámico del puntaje total
   const totalIncidenceScore = calculateTotalScore(responses, inspectionCatalog);
@@ -88,6 +141,9 @@ export default function InspectionForm() {
 
       alert('Inspección guardada exitosamente en Supabase y OneDrive.');
 
+      // Borrar borrador local tras éxito
+      await localforage.removeItem('current_inspection_draft');
+
       // RESET DEL FORMULARIO
       reset();
       setResetKey(prev => prev + 1); // Forzar remount de HeaderSection para nuevo ID
@@ -113,7 +169,7 @@ export default function InspectionForm() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
 
-          <HeaderSection key={resetKey} register={register} setValue={setValue} />
+          <HeaderSection key={resetKey} register={register} setValue={setValue} control={control} />
 
           {/* Renderizado dinámico de secciones de preguntas */}
           {Object.entries(inspectionCatalog).map(([sectionName, questions]) => (
@@ -125,6 +181,7 @@ export default function InspectionForm() {
                   question={question}
                   register={register}
                   setValue={setValue}
+                  control={control}
                 />
               ))}
             </div>

@@ -1,9 +1,19 @@
 // src/components/ImageUploader.jsx
 import React, { useState, useEffect } from 'react';
 
-export default function ImageUploader({ questionId, onFilesChange }) {
+export default function ImageUploader({ questionId, onFilesChange, initialFiles = [] }) {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [previewUrls, setPreviewUrls] = useState([]);
+
+    // Sincronizar con archivos iniciales (cuando se recupera un borrador)
+    useEffect(() => {
+        if (initialFiles && initialFiles.length > 0) {
+            setSelectedFiles(initialFiles);
+            // Generar URLs de vista previa para los archivos iniciales
+            const urls = initialFiles.map(file => URL.createObjectURL(file));
+            setPreviewUrls(urls);
+        }
+    }, [initialFiles]);
 
     // Maneja la selección de nuevos archivos
     const handleFileSelect = (e) => {
@@ -28,7 +38,9 @@ export default function ImageUploader({ questionId, onFilesChange }) {
         const updatedUrls = previewUrls.filter((_, index) => index !== indexToRemove);
 
         // Liberar memoria revocando la URL local
-        URL.revokeObjectURL(previewUrls[indexToRemove]);
+        if (previewUrls[indexToRemove]) {
+            URL.revokeObjectURL(previewUrls[indexToRemove]);
+        }
 
         setSelectedFiles(updatedFiles);
         setPreviewUrls(updatedUrls);
@@ -73,4 +85,4 @@ export default function ImageUploader({ questionId, onFilesChange }) {
             )}
         </div>
     );
-}
+}

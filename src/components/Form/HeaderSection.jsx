@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
 import { FormField, FormInput, FormTextArea } from './FormField';
 
 /**
@@ -11,12 +12,18 @@ const generarNumeroAuditoria = () => {
   return `UA${timestamp}`;
 };
 
-export const HeaderSection = ({ register, setValue }) => {
+export const HeaderSection = ({ register, setValue, control }) => {
   const numeroAuditoria = useMemo(() => generarNumeroAuditoria(), []);
+  
+  // Observamos si ya hay un número asignado (por ejemplo, desde un borrador)
+  const currentNumero = useWatch({ control, name: 'header.numero_au' });
 
   useEffect(() => {
-    setValue('header.numero_au', numeroAuditoria);
-  }, [setValue, numeroAuditoria]);
+    // Solo asignamos el nuevo número si el campo está vacío
+    if (!currentNumero) {
+      setValue('header.numero_au', numeroAuditoria);
+    }
+  }, [setValue, numeroAuditoria, currentNumero]);
 
   return (
     <div className="header-section">
@@ -26,7 +33,7 @@ export const HeaderSection = ({ register, setValue }) => {
           <input
             type="text"
             className="form-control"
-            value={numeroAuditoria}
+            value={currentNumero || numeroAuditoria}
             readOnly
             style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed', fontWeight: 'bold', letterSpacing: '0.5px' }}
           />
