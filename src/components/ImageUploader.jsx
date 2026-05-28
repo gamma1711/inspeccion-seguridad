@@ -57,7 +57,7 @@ export default function ImageUploader({ questionId, onFilesChange, initialFiles 
             <input
                 type="file"
                 multiple
-                accept="image/*,application/pdf"
+                accept="image/*,application/pdf,.heic,.heif"
                 onChange={handleFileSelect}
                 className="form-control"
                 style={{ border: 'none', paddingLeft: 0, backgroundColor: 'transparent' }}

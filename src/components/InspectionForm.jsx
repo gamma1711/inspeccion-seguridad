@@ -167,9 +167,9 @@ export default function InspectionForm() {
 
         <h2 className="main-title" id="form-top">Inspección de Seguridad a Aerogenerador</h2>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form key={resetKey} onSubmit={handleSubmit(onSubmit)}>
 
-          <HeaderSection key={resetKey} register={register} setValue={setValue} control={control} />
+          <HeaderSection register={register} setValue={setValue} control={control} />
 
           {/* Renderizado dinámico de secciones de preguntas */}
           {Object.entries(inspectionCatalog).map(([sectionName, questions]) => (
