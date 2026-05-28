@@ -20,6 +20,11 @@ export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog
     doc.setTextColor(0, 0, 0);
     // Posicionamos el texto a la derecha del logo
     doc.text("INSPECCIÓN DE SEGURIDAD A AEROGENERADOR", 60, 18);
+    
+    // Restauramos el tamaño y estilo de fuente por defecto para que el contenido
+    // de la nueva página (como "ESTADO:" o "COMENTARIOS:") no herede el tamaño 14
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
   };
 
   addHeader();
@@ -132,11 +137,29 @@ export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog
         }
       };
 
+      const qImages = imagesData.filter(img => img.question_code === q.id);
+      let imgBlockHeight = 3; // Espacio por defecto si no hay fotos
+      if (qImages.length > 0) {
+        const rows = Math.ceil(qImages.length / 3); // 3 fotos por fila
+        imgBlockHeight = rows * 48; // 40px de alto + 8px de margen por fila
+      }
+
       const appliedScore = resp.applied_score || 0;
       const questionLines = doc.splitTextToSize(q.text, 145);
       const qHeight = (questionLines.length * 4) + 2;
 
-      checkPageBreak(qHeight + 5);
+      const status = resp.status || 'N/A';
+      
+      const commentLines = doc.splitTextToSize(resp.comments || "Sin comentarios", 140);
+      const cHeight = (commentLines.length * 4) + 4;
+
+      // Calculamos la altura total del bloque (Pregunta + Estado + Comentarios + Fotos)
+      const totalBlockHeight = qHeight + 5 + cHeight + imgBlockHeight;
+      // Limitamos a 250 para evitar bucles infinitos en caso de que suban muchísimas fotos
+      const spaceToCheck = Math.min(totalBlockHeight, 250);
+
+      // Comprobamos el salto de página UNA SOLA VEZ para todo el bloque
+      checkPageBreak(spaceToCheck);
 
       // 1. Fila de la Pregunta
       drawBlockBg(y, qHeight);
@@ -152,22 +175,17 @@ export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog
       doc.text(questionLines, 45, y);
       y += qHeight;
 
-      // 2. Fila de Estado
-      checkPageBreak(5);
+      // 2. Fila de Estado (Ya no requiere checkPageBreak individual)
       drawBlockBg(y, 5);
       doc.setFont("helvetica", "bold");
       doc.text("ESTADO:", 12, y);
       doc.setFont("helvetica", "normal");
-      const status = resp.status || 'N/A';
       if (isNoOk) doc.setTextColor(200, 0, 0);
       doc.text(status, 35, y);
       doc.setTextColor(0, 0, 0);
       y += 5;
 
-      // 3. Fila de Comentarios
-      const commentLines = doc.splitTextToSize(resp.comments || "Sin comentarios", 140);
-      const cHeight = (commentLines.length * 4) + 4;
-      checkPageBreak(cHeight);
+      // 3. Fila de Comentarios (Ya no requiere checkPageBreak individual)
       drawBlockBg(y, cHeight);
       doc.setFont("helvetica", "bold");
       doc.text("COMENTARIOS:", 12, y);
@@ -176,7 +194,6 @@ export const generarPDFBase64 = (headerData, responsesArray, totalScore, catalog
       y += cHeight;
 
       // 4. Renderizado de Imágenes
-      const qImages = imagesData.filter(img => img.question_code === q.id);
       if (qImages.length > 0) {
         let xImg = 12;
         const imgWidth = 50;

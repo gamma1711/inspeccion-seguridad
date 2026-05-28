@@ -11,7 +11,6 @@ import {
   saveInspectionResponses,
   processM365Inspection
 } from '../services/inspectionService';
-import { compressAndPrepareImage } from '../utils/imageUtils';
 import { calculateTotalScore, getIncidenceWeight } from '../utils/inspectionUtils';
 import './InspectionForm.css';
 import logo from '../assets/7-revergy_horizontal.png';
@@ -58,10 +57,12 @@ export default function InspectionForm() {
   // Guardado automático con Debounce (1.5 segundos)
   useEffect(() => {
     const timer = setTimeout(async () => {
-      // Solo guardamos si hay algo de información en la cabecera o respuestas
-      const hasContent = allValues.header?.project_name || 
-                        allValues.header?.instalacion || 
-                        Object.keys(allValues.responses || {}).length > 0;
+      // Solo guardamos si hay texto en la cabecera (ignorando autogenerados como numero_au) o alguna respuesta con valor real
+      const hasHeaderContent = !!(allValues.header?.project_name || allValues.header?.instalacion || allValues.header?.activo_inspeccionado || allValues.header?.agrupacion);
+      const hasActualResponses = Object.values(allValues.responses || {}).some(
+        resp => resp && (resp.status || resp.comments || (resp.photos && resp.photos.length > 0))
+      );
+      const hasContent = hasHeaderContent || hasActualResponses;
       
       if (hasContent && !isSubmitting) {
         try {
@@ -109,11 +110,10 @@ export default function InspectionForm() {
           applied_score: appliedScore
         });
 
-        // Procesamiento de imágenes (compresión y base64)
+        // Procesamiento de imágenes (ya vienen comprimidas desde el ImageUploader)
         if (response.photos && response.photos.length > 0) {
           for (let i = 0; i < response.photos.length; i++) {
-            const imageData = await compressAndPrepareImage(response.photos[i], questionId, i);
-            imagesForOneDrive.push(imageData);
+            imagesForOneDrive.push(response.photos[i]);
           }
         }
       }
